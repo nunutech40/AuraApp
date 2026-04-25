@@ -50,12 +50,11 @@ Bagian ini menggambarkan perjalanan data dari mulai *user* mengklik tombol di Fl
 
 ```mermaid
 graph TD
-    A[Mulai Aplikasi] --> B(Tekan Tombol Scan)
-    B --> C{Pilih Foto dari Galeri}
-    C -->|Batal| B
+    A[Mulai Aplikasi / Home Screen] --> B{Buka Galeri & Pilih Foto}
+    B -->|Batal| A
     
     subgraph Layer Native Bridge
-    C -->|Pilih Foto| F[[Data Layer: MethodChannel.invokeMethod]]
+    B -->|Selesai Memilih| F[[Data Layer: MethodChannel.invokeMethod]]
     F --> G[Native Swift: Terima Image Paths]
     G --> H((Vision-Phi Engine))
     H --> I[Native Swift: Kembalikan JSON/Array]
