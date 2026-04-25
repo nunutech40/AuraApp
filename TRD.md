@@ -6,18 +6,22 @@ Sistem ini menggunakan standar industri **Clean Architecture** (Presentation, Do
 Tujuannya agar modul Tampilan (UI) dan Otak Pemroses (Matematika & Native Swift) bekerja sebagai entitas terpisah (*loosely coupled*) yang saling berkomunikasi lewat jembatan antarmuka (Interface/Contract).
 
 ## 2. Tech Stack (Spesifikasi Teknologi)
+Berikut adalah daftar lengkap teknologi yang digunakan beserta alasan dan kegunaannya masing-masing dalam aplikasi ini:
 
-### 2.1 The View & Logic (Flutter/Dart Layer)
-*   **Arsitektur Standar:** Clean Architecture.
-*   **State Management:** BLoC / Cubit (Sangat cocok untuk Clean Architecture).
-*   **Dependency Injection (DI):** `get_it` (Sebagai kontainer objek agar UI dan UseCase tidak saling *hardcode*).
-*   **Hardware Access:** `image_picker` (akses Galeri iOS).
-*   **Styling & FX:** Custom Paint, AnimationController, Glassmorphism (*BackdropFilter*).
+### 2.1 Flutter / Dart (Lapisan Antarmuka & Logika Bisnis)
+*   **Flutter & Dart (Framework Utama):** Digunakan untuk merancang UI yang sangat *fluid* dan animasi sinematik dengan performa tinggi.
+*   **Clean Architecture (Pola Arsitektur):** Memisahkan kode menjadi lapisan `Presentation`, `Domain`, dan `Data`. Kegunaannya agar kode mudah di-*maintenance* dan fungsi UI dengan logika mesin benar-benar terisolasi.
+*   **BLoC / Cubit (`flutter_bloc`):** *State Management* utama. Kegunaannya memisahkan *Business Logic* dari UI. Cubit akan memancarkan perubahan status layar (misal: *Initial* ➡️ *Scanning* ➡️ *Success*).
+*   **Dependency Injection (`get_it`):** Kontainer sentral. Kegunaannya agar antar-kelas (*UseCase*, *Repository*, *Cubit*) bisa saling berkomunikasi tanpa di-inisialisasi secara *hardcode* (*loosely coupled*).
+*   **Equatability (`equatable`):** Pustaka pembanding objek. Sangat berguna bersama *Cubit* agar layar tidak melakukan *render* ulang membuang memori jika status datanya sama persis.
+*   **Hardware Access (`image_picker`):** Pustaka resmi untuk meminta izin privasi OS dan membuka Galeri (*Camera Roll*) iOS agar *user* bisa menyeleksi beberapa foto sekaligus.
+*   **Visual Effects (Native UI Dart):** Mengandalkan `CustomPaint` (untuk menggambar animasi laser *scanner* dari nol), `AnimationController` (mengatur durasi *loop* laser), dan `BackdropFilter` (menciptakan efek blur kaca / *Glassmorphism* bergaya premium).
 
-### 2.2 The Processor (Native Backend iOS)
-*   **Bahasa Utama:** Swift.
-*   **Core Engine:** Apple `Vision` framework (`VNDetectFaceLandmarksRequest`).
-*   **Communication Bridge:** `FlutterMethodChannel`.
+### 2.2 Native iOS (Lapisan Pemrosesan & Kecerdasan Buatan)
+*   **Swift (Bahasa Pemrograman):** Bahasa asli buatan Apple. Kegunaannya untuk mengelola logika komputasi berat dengan akses kecepatan penuh ke *hardware* iPhone.
+*   **Apple Vision Framework (`VNDetectFaceLandmarksRequest`):** Teknologi *Computer Vision* resmi bawaan sistem Apple. Kegunaannya untuk melakukan *scan* wajah dan memetakan koordinat spesifik (mata, bibir, kontur wajah) murni secara lokal tanpa internet.
+*   **Swift Native Math (Geometri):** Matematika bawaan Swift. Kegunaannya untuk mengkalkulasi *Euclidean Distance* (jarak piksel antar titik wajah) dan membandingkannya dengan rasio kecantikan mutlak (*Phi / Golden Ratio* = 1.618).
+*   **MethodChannel (`FlutterMethodChannel`):** Jembatan komunikasi OS. Kegunaannya untuk menyeberangkan pesan (dalam bentuk biner *StandardMessageCodec*) dari Flutter ke Swift, dan membawa hasil perhitungan Swift kembali ke Flutter secara asinkron.
 
 ## 3. Pembagian Layer (Clean Architecture)
 
