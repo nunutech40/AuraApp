@@ -98,6 +98,35 @@ graph TD
     S9 --> S10[Native Swift: Bundle ke Dictionary/JSON]
 ```
 
+### 5.3 Flowchart Komunikasi Lintas Platform (MethodChannel Bridge)
+Bagian ini (menggunakan *Sequence Diagram*) menjelaskan proses serah terima data secara kronologis antara aplikasi Flutter, jembatan komunikasi, fungsi Swift, dan teknologi *Vision Framework*.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant UI as Flutter (Dart Layer)
+    participant Bridge as MethodChannel
+    participant Swift as Native iOS (Swift)
+    participant Vision as Apple Vision (ML/AI)
+
+    UI->>Bridge: Kirim List Path: ["/img1.jpg", "/img2.jpg"]
+    Note over UI,Bridge: invokeMethod("calculateAura")
+    Bridge->>Swift: Request Diterima oleh AppDelegate
+    
+    loop Untuk Setiap Foto
+        Swift->>Swift: Konversi String Path -> UIImage
+        Swift->>Vision: Eksekusi VNDetectFaceLandmarksRequest
+        Note over Vision: Proses Offline via <br>Neural Engine Apple
+        Vision-->>Swift: Kembalikan Titik Koordinat x,y Wajah
+        Swift->>Swift: Jalankan Rumus Matematika (Golden Ratio / 1.618)
+        Swift->>Swift: Dapatkan Persentase Skor Aura
+    end
+
+    Swift-->>Bridge: Array of Dictionary: [{path: "...", score: 98}]
+    Note over Bridge,UI: Data dikirim secara Asynchronous
+    Bridge-->>UI: Data JSON siap di-parsing oleh Data Layer
+```
+
 ## 6. Struktur Direktori Proyek
 ```text
 AuraApp/
