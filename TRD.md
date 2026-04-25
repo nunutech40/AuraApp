@@ -53,7 +53,7 @@ graph TD
     A[Mulai Aplikasi / Home Screen] --> B{Buka Galeri & Pilih Foto}
     B -->|Batal| A
     
-    subgraph Layer Native Bridge
+    subgraph Bridge [Layer Native Bridge]
     B -->|Selesai Memilih| F[[Data Layer: MethodChannel.invokeMethod]]
     F --> G[Native Swift: Terima Image Paths]
     G --> H((Vision-Phi Engine))
@@ -75,7 +75,7 @@ Bagian ini adalah *zoom-in* dari titik `H` di atas. **"Vision-Phi Engine"** buka
 graph TD
     S1[Native Swift: Mulai Loop Array Image Paths] --> S2[Native Swift: Load file menjadi UIImage]
     
-    subgraph Apple Vision Framework (Computer Vision)
+    subgraph Vision [Apple Vision Framework]
     S2 --> S3[Vision: Inisialisasi VNImageRequestHandler]
     S3 --> S4[Vision: Eksekusi VNDetectFaceLandmarksRequest]
     S4 --> S5{Vision: Wajah Terdeteksi?}
@@ -84,7 +84,7 @@ graph TD
     
     S5 -->|Tidak| S6[Skor = 0.0]
     
-    subgraph Native Swift Math (Geometri & Golden Ratio)
+    subgraph Math [Native Swift Math - Golden Ratio]
     S7 --> M1[Dapatkan Titik Koordinat x,y <br> Mata, Hidung, Bibir, Kontur]
     M1 --> M2[Hitung Jarak Pixel Lurus <br> Euclidean Distance Antar Titik]
     M2 --> M3[Hitung Rasio Jarak A / Jarak B <br> misal: Lebar Bibir dibagi Lebar Hidung]
