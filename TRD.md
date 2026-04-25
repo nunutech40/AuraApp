@@ -67,7 +67,9 @@ graph TD
 ```
 
 ### 5.2 Flowchart Algoritma Pemrosesan (Vision-Phi Engine)
-Bagian ini adalah *zoom-in* dari titik `H` di atas. Menggambarkan bagaimana *Native Swift* dan *Apple Vision Framework* menghitung proporsi wajah murni secara lokal.
+Bagian ini adalah *zoom-in* dari titik `H` di atas. **"Vision-Phi Engine"** bukanlah sebuah *library* eksternal yang kita *download*, melainkan **nama sebutan untuk arsitektur custom** yang kita bangun sendiri di dalam lapisan Swift. Mesin ini menggabungkan dua teknologi utama:
+1.  **Teknologi Pemindai Wajah (Computer Vision):** Menggunakan **`Vision Framework`** (spesifiknya kelas `VNDetectFaceLandmarksRequest`). Ini adalah teknologi *Machine Learning* resmi bawaan Apple iOS. Bertugas secara instan mengekstrak titik koordinat mata, hidung, dan bibir langsung dari perangkat (*offline*).
+2.  **Teknologi Kalkulator Geometri:** Menggunakan modul matematika bawaan **Swift** (komputasi variabel *Double*). Bertugas mengukur jarak piksel lurus antar titik koordinat yang ditemukan Apple Vision, membaginya, dan membandingkannya dengan Konstanta Rasio Emas (*Phi* = 1.618).
 
 ```mermaid
 graph TD
