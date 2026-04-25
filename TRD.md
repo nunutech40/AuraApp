@@ -102,7 +102,7 @@ graph TD
     S9 --> S10[Native Swift: Bundle ke Dictionary/JSON]
 ```
 
-### 5.3 Flowchart Komunikasi Lintas Platform (MethodChannel Bridge)
+### 5.3 Sequence Diagram Komunikasi Lintas Platform (MethodChannel Bridge)
 Bagian ini (menggunakan *Sequence Diagram*) menjelaskan proses serah terima data secara kronologis antara aplikasi Flutter, jembatan komunikasi, fungsi Swift, dan teknologi *Vision Framework*.
 
 ```mermaid
