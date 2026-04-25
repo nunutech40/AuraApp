@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import '../bloc/aura_cubit.dart';
 import '../bloc/aura_state.dart';
 import '../widgets/laser_scanner_animation.dart';
+import 'leaderboard_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -64,12 +65,17 @@ class HomePage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: BlocConsumer<AuraCubit, AuraState>(
                 listener: (context, state) {
-                  // Listener tidak mengubah UI langsung, hanya untuk trigger Pindah Layar / Notif
+                  // Jika sukses, lempar ke halaman Leaderboard
                   if (state is AuraSuccess) {
-                    // TODO: Pindah ke Leaderboard (Fase 7)
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Kalkulasi Selesai! (Siap masuk Fase 7)')),
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => LeaderboardPage(results: state.results),
+                      ),
                     );
+                    
+                    // Reset status ke awal agar pas user klik tombol back, aplikasinya siap nge-scan lagi
+                    context.read<AuraCubit>().reset();
+                    
                   } else if (state is AuraError) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Error: ${state.message}'), backgroundColor: Colors.red),
