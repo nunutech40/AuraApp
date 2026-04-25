@@ -126,6 +126,36 @@ sequenceDiagram
     Note over Bridge,UI: Data dikirim secara Asynchronous
     Bridge-->>UI: Data JSON siap di-parsing oleh Data Layer
 ```
+### 5.4 Anatomi Di Balik Layar (Sistem Operasi & MethodChannel)
+Bagian ini menjelaskan *secara terpisah* bagaimana pesan dari Flutter bisa menembus batas bahasa pemrograman dan ditangkap oleh sistem operasi Native (iOS) tanpa ngelewatin internet sama sekali.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Dart as 💙 Dart (Flutter UI)
+    participant Engine as ⚙️ C++ (Flutter Engine)
+    participant OS as 🍏 Sistem Operasi iOS (Biner)
+    participant Swift as 🍎 Swift (Native iOS)
+
+    Note over Dart: Data berwujud List / String
+    Dart->>Engine: invokeMethod("calculateAura")
+    
+    Note over Engine: StandardMessageCodec
+    Engine->>Engine: Serialisasi Data ke Format Biner (01010)
+    
+    Engine->>OS: Titip pesan biner ke Antrean OS (Asynchronous)
+    Note over OS: Pesan melintas lewat memori internal HP
+    
+    OS->>Swift: Ketuk pintu `AppDelegate` di Main Thread
+    Swift->>Swift: Deserialisasi: Biner diterjemahkan <br>jadi Array Swift
+    
+    Note over Swift: Eksekusi Apple Vision Framework <br> & Rumus Matematika (Selesai)
+    
+    Swift->>OS: Titip Hasil (Dictionary Swift)
+    OS->>Engine: Kembalikan biner hasil ke C++ Engine
+    Engine->>Engine: Deserialisasi kembali ke format Dart
+    Engine-->>Dart: Return berupa objek Future<dynamic>
+```
 
 ## 6. Struktur Direktori Proyek
 ```text
