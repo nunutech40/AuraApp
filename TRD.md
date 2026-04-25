@@ -43,7 +43,61 @@ Lapisan murni Dart yang sama sekali **tidak peduli** apakah data berasal dari AP
 *   Swift menghitung rasio matematis titik-titik tersebut dan membandingkannya dengan **Rasio Emas / Phi (1.618)**.
 *   Nilai penyimpangan / deviasi akurasi dari 1.618 dikonversi menjadi persentase skor aura (0-100%).
 
-## 5. Struktur Direktori Proyek
+## 5. Flowchart Sistem
+
+### 5.1 Flowchart Aplikasi Keseluruhan (Input ke Output)
+Bagian ini menggambarkan perjalanan data dari mulai *user* mengklik tombol di Flutter, menyeberang ke lapisan *Native iOS*, hingga hasilnya kembali untuk dirender oleh *Cubit*.
+
+```mermaid
+graph TD
+    A[Mulai Aplikasi] --> B(Tekan Tombol Scan)
+    B --> C{Pilih Foto dari Galeri}
+    C -->|Batal| B
+    C -->|Pilih Foto| D[BLoC: Emit State Loading]
+    D --> E[UI: Render Animasi Laser & Teks Hacker]
+    
+    subgraph Layer Native Bridge
+    D --> F[[Data Layer: MethodChannel.invokeMethod]]
+    F --> G[Native Swift: Terima Image Paths]
+    G --> H((Vision-Phi Engine))
+    H --> I[Native Swift: Kembalikan JSON/Array]
+    I --> J[[Data Layer: Parse JSON ke AuraEntity]]
+    end
+    
+    J --> K[BLoC: Sortir Skor Tertinggi]
+    K --> L[BLoC: Emit State Success]
+    L --> M[UI: Matikan Animasi Laser]
+    M --> N[UI: Render Leaderboard Card & Transisi Glow]
+    N --> O[Selesai]
+```
+
+### 5.2 Flowchart Algoritma Pemrosesan (Vision-Phi Engine)
+Bagian ini adalah *zoom-in* dari titik `H` di atas. Menggambarkan bagaimana *Native Swift* dan *Apple Vision Framework* menghitung proporsi wajah murni secara lokal.
+
+```mermaid
+graph TD
+    S1[Swift: Mulai Loop Foto] --> S2[Load UIImage dari Path]
+    S2 --> S3[Inisialisasi VNImageRequestHandler]
+    S3 --> S4[Eksekusi VNDetectFaceLandmarksRequest]
+    S4 --> S5{Wajah Terdeteksi?}
+    S5 -->|Tidak| S6[Skor = 0.0]
+    S5 -->|Ya| S7[Ekstrak Objek VNFaceLandmarks2D]
+    
+    subgraph Kalkulasi Matematis Geometri
+    S7 --> M1[Dapatkan Titik Koordinat x,y <br> Mata, Hidung, Bibir, Kontur]
+    M1 --> M2[Hitung Jarak Pixel Lurus <br> Euclidean Distance Antar Titik]
+    M2 --> M3[Hitung Rasio Jarak A / Jarak B <br> misal: Lebar Bibir dibagi Lebar Hidung]
+    M3 --> M4{Bandingkan dengan Phi 1.618}
+    M4 --> M5[Hitung Persentase Deviasi Error <br> dari 1.618]
+    end
+    
+    M5 --> S8[Kalkulasi Rata-Rata Akurasi <br> Seluruh Titik Wajah]
+    S8 --> S9[Konversi ke Skor Akhir 0.0 - 100.0]
+    S6 --> S10[Simpan ke Dictionary/JSON]
+    S9 --> S10[Simpan ke Dictionary/JSON]
+```
+
+## 6. Struktur Direktori Proyek
 ```text
 AuraApp/
 │
