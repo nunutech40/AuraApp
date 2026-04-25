@@ -21,7 +21,7 @@ Berikut adalah daftar lengkap teknologi yang digunakan beserta alasan dan keguna
 *   **Swift (Bahasa Pemrograman):** Bahasa asli buatan Apple. Kegunaannya untuk mengelola logika komputasi berat dengan akses kecepatan penuh ke *hardware* iPhone.
 *   **Apple Vision Framework (`VNDetectFaceLandmarksRequest`):** Teknologi *Computer Vision* resmi bawaan sistem Apple. Kegunaannya untuk melakukan *scan* wajah dan memetakan koordinat spesifik (mata, bibir, kontur wajah) murni secara lokal tanpa internet.
 *   **Swift Native Math (Geometri):** Matematika bawaan Swift. Kegunaannya untuk mengkalkulasi *Euclidean Distance* (jarak piksel antar titik wajah) dan membandingkannya dengan rasio kecantikan mutlak (*Phi / Golden Ratio* = 1.618).
-*   **MethodChannel (`FlutterMethodChannel`):** Jembatan komunikasi OS. Kegunaannya untuk menyeberangkan pesan (dalam bentuk biner *StandardMessageCodec*) dari Flutter ke Swift, dan membawa hasil perhitungan Swift kembali ke Flutter secara asinkron.
+*   **MethodChannel (`FlutterMethodChannel`):** Protokol jembatan komunikasi bawaan murni dari **Flutter Engine (Google)**. Kegunaannya untuk menyeberangkan pesan (dalam bentuk biner *StandardMessageCodec*) dari Flutter ke Swift, dan membawa hasil perhitungan Swift kembali ke Flutter secara asinkron.
 
 ## 3. Pembagian Layer (Clean Architecture)
 
