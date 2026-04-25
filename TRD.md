@@ -53,11 +53,9 @@ graph TD
     A[Mulai Aplikasi] --> B(Tekan Tombol Scan)
     B --> C{Pilih Foto dari Galeri}
     C -->|Batal| B
-    C -->|Pilih Foto| D[BLoC: Emit State Loading]
-    D --> E[UI: Render Animasi Laser & Teks Hacker]
     
     subgraph Layer Native Bridge
-    D --> F[[Data Layer: MethodChannel.invokeMethod]]
+    C -->|Pilih Foto| F[[Data Layer: MethodChannel.invokeMethod]]
     F --> G[Native Swift: Terima Image Paths]
     G --> H((Vision-Phi Engine))
     H --> I[Native Swift: Kembalikan JSON/Array]
@@ -65,9 +63,7 @@ graph TD
     end
     
     J --> K[BLoC: Sortir Skor Tertinggi]
-    K --> L[BLoC: Emit State Success]
-    L --> M[UI: Matikan Animasi Laser]
-    M --> N[UI: Render Leaderboard Card & Transisi Glow]
+    K --> N[UI: Render Leaderboard Card & Transisi Glow]
     N --> O[Selesai]
 ```
 
