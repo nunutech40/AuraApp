@@ -161,6 +161,16 @@ sequenceDiagram
     Engine-->>Dart: Return berupa objek Future<dynamic>
 ```
 
+### 5.5 Anatomi Kompilasi: Apakah Flutter & Swift Berada di Binary yang Sama?
+Penting untuk dipahami bahwa *Vision-Phi Engine* yang kita buat dengan Swift **bukanlah** sebuah program terpisah, bukan *server*, dan bukan biner (*binary*) mandiri. 
+
+Saat kita melakukan proses *build* (`flutter build ios`), seluruh kode akan **dilebur menjadi SATU kesatuan biner aplikasi iOS tunggal (file `.app` / `.ipa`)**.
+
+1.  **Swift (`AppDelegate.swift`)** bertindak sebagai **"Tuan Rumah"** (*Native Host OS*). Di dalam Tuan Rumah inilah fungsi pemanggilan Apple Vision bersarang.
+2.  **Flutter** (Dart) dikompilasi menjadi bahasa C++ dan ditanamkan ke dalam Tuan Rumah tersebut (sebagai komponen UI atau layar/kanvas).
+
+Jadi, ketika Flutter memanggil algoritma Swift, itu **bukan** sebuah aplikasi mengakses program/binary lain di luar sana. Melainkan murni komunikasi antar komponen di dalam ruang memori (RAM) aplikasi yang persis sama. Ini membuat eksekusi Apple Vision lewat *MethodChannel* nyaris tidak memiliki latensi (*Zero Latency Network*).
+
 ## 6. Struktur Direktori Proyek
 ```text
 AuraApp/
