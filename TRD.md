@@ -175,26 +175,26 @@ Berikut adalah visualisasi anatomi biner tunggal tersebut:
 
 ```mermaid
 graph TD
-    subgraph AppBinary [SATU BINER TUNGGAL : AuraApp.ipa / .app]
+    subgraph AppBinary ["SATU BINER TUNGGAL : AuraApp.ipa / .app"]
         direction TB
         
-        subgraph Host [Native iOS Host]
-            S1[AppDelegate.swift <br> Tuan Rumah Aplikasi]
-            S2((Vision-Phi Engine <br> Logika Swift))
+        subgraph Host ["Native iOS Host"]
+            S1["AppDelegate.swift <br> Tuan Rumah Aplikasi"]
+            S2(("Vision-Phi Engine <br> Logika Swift"))
             
             S1 --- S2
         end
         
-        subgraph Flutter [Flutter Framework]
-            F1[C++ Engine <br> Mesin Perender UI]
-            F2[Kode Dart <br> Antarmuka & BLoC]
+        subgraph Flutter ["Flutter Framework"]
+            F1["C++ Engine <br> Mesin Perender UI"]
+            F2["Kode Dart <br> Antarmuka & BLoC"]
             
             F2 --- F1
         end
         
-        F1 <==>|Jalur MethodChannel <br> Melintasi RAM (Tanpa Internet)| S1
+        F1 <-->|"Jalur MethodChannel (Internal RAM)"| S1
         
-        S2 -.->|Akses Fitur Hardware OS| AppleVision(Apple Vision <br> Neural Engine iPhone)
+        S2 -.->|"Akses Fitur Hardware OS"| AppleVision("Apple Vision <br> Neural Engine iPhone")
     end
 ```
 
