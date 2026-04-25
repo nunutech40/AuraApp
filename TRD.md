@@ -14,7 +14,7 @@ Berikut adalah daftar lengkap teknologi yang digunakan beserta alasan dan keguna
 *   **BLoC / Cubit (`flutter_bloc`):** *State Management* utama. Kegunaannya memisahkan *Business Logic* dari UI. Cubit akan memancarkan perubahan status layar (misal: *Initial* ➡️ *Scanning* ➡️ *Success*).
 *   **Dependency Injection (`get_it`):** Kontainer sentral. Kegunaannya agar antar-kelas (*UseCase*, *Repository*, *Cubit*) bisa saling berkomunikasi tanpa di-inisialisasi secara *hardcode* (*loosely coupled*).
 *   **Equatability (`equatable`):** Pustaka pembanding objek. Sangat berguna bersama *Cubit* agar layar tidak melakukan *render* ulang membuang memori jika status datanya sama persis.
-*   **Hardware Access (`image_picker`):** Pustaka resmi untuk meminta izin privasi OS dan membuka Galeri (*Camera Roll*) iOS agar *user* bisa menyeleksi beberapa foto sekaligus.
+*   **Hardware Access (`image_picker`):** Pustaka (Library) resmi buatan tim pengembang **Flutter (`flutter.dev`)**. Kegunaannya di sisi Dart adalah untuk meminta izin privasi OS dan membuka Galeri (*Camera Roll*) iOS agar *user* bisa menyeleksi beberapa foto sekaligus.
 *   **Visual Effects (Native UI Dart):** Mengandalkan `CustomPaint` (untuk menggambar animasi laser *scanner* dari nol), `AnimationController` (mengatur durasi *loop* laser), dan `BackdropFilter` (menciptakan efek blur kaca / *Glassmorphism* bergaya premium).
 
 ### 2.2 Native iOS (Lapisan Pemrosesan & Kecerdasan Buatan)
