@@ -73,25 +73,29 @@ Bagian ini adalah *zoom-in* dari titik `H` di atas. **"Vision-Phi Engine"** buka
 
 ```mermaid
 graph TD
-    S1[Swift: Mulai Loop Foto] --> S2[Load UIImage dari Path]
-    S2 --> S3[Inisialisasi VNImageRequestHandler]
-    S3 --> S4[Eksekusi VNDetectFaceLandmarksRequest]
-    S4 --> S5{Wajah Terdeteksi?}
-    S5 -->|Tidak| S6[Skor = 0.0]
-    S5 -->|Ya| S7[Ekstrak Objek VNFaceLandmarks2D]
+    S1[Native Swift: Mulai Loop Array Image Paths] --> S2[Native Swift: Load file menjadi UIImage]
     
-    subgraph Kalkulasi Matematis Geometri
+    subgraph Apple Vision Framework (Computer Vision)
+    S2 --> S3[Vision: Inisialisasi VNImageRequestHandler]
+    S3 --> S4[Vision: Eksekusi VNDetectFaceLandmarksRequest]
+    S4 --> S5{Vision: Wajah Terdeteksi?}
+    S5 -->|Ya| S7[Vision: Ekstrak Objek VNFaceLandmarks2D]
+    end
+    
+    S5 -->|Tidak| S6[Skor = 0.0]
+    
+    subgraph Native Swift Math (Geometri & Golden Ratio)
     S7 --> M1[Dapatkan Titik Koordinat x,y <br> Mata, Hidung, Bibir, Kontur]
     M1 --> M2[Hitung Jarak Pixel Lurus <br> Euclidean Distance Antar Titik]
     M2 --> M3[Hitung Rasio Jarak A / Jarak B <br> misal: Lebar Bibir dibagi Lebar Hidung]
     M3 --> M4{Bandingkan dengan Phi 1.618}
     M4 --> M5[Hitung Persentase Deviasi Error <br> dari 1.618]
-    end
-    
     M5 --> S8[Kalkulasi Rata-Rata Akurasi <br> Seluruh Titik Wajah]
     S8 --> S9[Konversi ke Skor Akhir 0.0 - 100.0]
-    S6 --> S10[Simpan ke Dictionary/JSON]
-    S9 --> S10[Simpan ke Dictionary/JSON]
+    end
+    
+    S6 --> S10[Native Swift: Bundle ke Dictionary/JSON]
+    S9 --> S10[Native Swift: Bundle ke Dictionary/JSON]
 ```
 
 ## 6. Struktur Direktori Proyek
