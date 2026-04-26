@@ -56,12 +56,6 @@ import Vision
   
   // Inti Mesin Kecerdasan Buatan (Apple Vision + Swift Native Math)
   private func calculateScoreForImage(at path: String) -> Double {
-      let fileURL = URL(fileURLWithPath: path)
-      guard let image = UIImage(contentsOfFile: fileURL.path),
-            let cgImage = image.cgImage else {
-          return 0.0 // Gagal load image
-      }
-      
       var finalScore = 0.0
       
       // Inisialisasi Detektor Landmark Wajah Apple Vision
@@ -85,12 +79,12 @@ import Vision
               // 1. Ekstrak Lebar Hidung (Titik x Maks - x Min)
               let nosePoints = nose.normalizedPoints
               if let nLeft = nosePoints.min(by: { $0.x < $1.x }), let nRight = nosePoints.max(by: { $0.x < $1.x }) {
-                  let noseWidth = abs(nRight.x - nLeft.x) * faceWidth
+                  let noseWidth = abs(Double(nRight.x) - Double(nLeft.x)) * Double(faceWidth)
                   
                   // 2. Ekstrak Lebar Bibir (Titik x Maks - x Min)
                   let lipPoints = outerLips.normalizedPoints
                   if let lLeft = lipPoints.min(by: { $0.x < $1.x }), let lRight = lipPoints.max(by: { $0.x < $1.x }) {
-                      let lipWidth = abs(lRight.x - lLeft.x) * faceWidth
+                      let lipWidth = abs(Double(lRight.x) - Double(lLeft.x)) * Double(faceWidth)
                       
                       // 3. Kalkulasi Geometri Euclidean Rasio
                       if noseWidth > 0 {
@@ -115,7 +109,21 @@ import Vision
           }
       }
       
-      // Eksekusi Mesin Apple Neural Engine
+      // Workaround for Simulator on Apple Silicon throwing "Could not create inference context"
+      #if targetEnvironment(simulator)
+      request.usesCPUOnly = true
+      #endif
+      
+      // Membersihkan prefix file:// jika ada, agar path valid untuk UIImage
+      let cleanPath = path.replacingOccurrences(of: "file://", with: "")
+      
+      // Membaca gambar menggunakan UIImage untuk menghindari error FileProvider 
+      // dan memastikan format didukung oleh Vision
+      guard let image = UIImage(contentsOfFile: cleanPath), let cgImage = image.cgImage else {
+          print("Failed to read image from path: \(cleanPath)")
+          return 0.0
+      }
+      
       let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
       do {
           try handler.perform([request])
