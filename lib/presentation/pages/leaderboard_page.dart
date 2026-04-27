@@ -16,7 +16,7 @@ class LeaderboardPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
-          "HASIL AURA",
+          "SPEKTRUM PESONA",
           style: TextStyle(
             fontWeight: FontWeight.w900,
             letterSpacing: 2.0,
@@ -67,6 +67,15 @@ class LeaderboardPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  // Helper function untuk memberikan label berdasarkan skor
+  String _getAuraLabel(double score) {
+    if (score >= 95.0) return "Supreme Aura 👑";
+    if (score >= 90.0) return "Ethereal Charm ✨";
+    if (score >= 80.0) return "Captivating Vibe 💫";
+    if (score >= 70.0) return "Pleasant Harmony 🌟";
+    return "Unique Signature 🔥";
   }
 
   // Tampilan Kartu untuk masing-masing foto
@@ -133,7 +142,7 @@ class LeaderboardPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    isWinner ? "Bidadari Utama 👑" : "Aura Biasa",
+                    _getAuraLabel(entity.score),
                     style: TextStyle(
                       color: isWinner ? Colors.amber : Colors.white70,
                       fontWeight: FontWeight.bold,

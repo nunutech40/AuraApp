@@ -83,12 +83,24 @@ class HomePage extends StatelessWidget {
                   }
                 },
                 builder: (context, state) {
-                  // Mengubah isi layar 100% tanpa perpindahan halaman berdasarkan State
-                  if (state is AuraScanning) {
-                    return _buildScanningUI();
-                  }
-                  
-                  return _buildInitialUI(context);
+                  // Menggunakan AnimatedSwitcher agar perpindahan state terasa seperti animasi organik, bukan sekadar ganti halaman
+                  return AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 700),
+                    switchInCurve: Curves.easeOutBack,
+                    switchOutCurve: Curves.easeIn,
+                    transitionBuilder: (Widget child, Animation<double> animation) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: ScaleTransition(
+                          scale: Tween<double>(begin: 0.85, end: 1.0).animate(animation),
+                          child: child,
+                        ),
+                      );
+                    },
+                    child: state is AuraScanning
+                        ? KeyedSubtree(key: const ValueKey('scanning'), child: _buildScanningUI())
+                        : KeyedSubtree(key: const ValueKey('initial'), child: _buildInitialUI(context)),
+                  );
                 },
               ),
             ),
@@ -108,7 +120,7 @@ class HomePage extends StatelessWidget {
         const Icon(Icons.auto_awesome, size: 80, color: Colors.cyanAccent),
         const SizedBox(height: 24),
         const Text(
-          "BidadariMeter",
+          "AuraMeter",
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 36,
@@ -118,8 +130,8 @@ class HomePage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        Text(
-          "Ukur persentase Aura kecantikan dengan teknologi Apple Vision & Golden Ratio.",
+        const Text(
+          "Ukur persentase karisma & estetika wajah dengan teknologi Apple Vision & Golden Ratio.",
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 16,
@@ -170,7 +182,7 @@ class HomePage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const Text(
-          "MEMPROSES AURA...",
+          "MENGKALKULASI RASIO EMAS...",
           style: TextStyle(
             color: Colors.cyanAccent,
             fontSize: 20,

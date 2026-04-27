@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<AuraCubit>()),
       ],
       child: MaterialApp(
-        title: 'BidadariMeter',
+        title: 'AuraMeter',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
